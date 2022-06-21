@@ -1,7 +1,18 @@
 import { sequelize } from "../models/init-models"
 const findAll=async (req,res)=>{
     try{
-        const country=await req.context.models.countries.findAll()
+        const country=await req.context.models.countries.findAll({
+            include:[{
+                model:req.context.models.locations,
+                as:"locations",
+                required:true,
+                include: {
+                    model: req.context.models.departments,
+                    as:"departments",
+                    required:true
+                  }
+            }]
+        })
         return res.send(country)
     }catch(error){
         return res.status(404).send(error)
@@ -20,13 +31,28 @@ const findOne=async (req,res)=>{
 }
 
 const create=async (req,res)=>{
+    const checkReg=req.regions
+    try{
+        const country=await req.context.models.countries.create({
+            country_id:req.body.country_id,
+            country_name:req.body.country_name,
+            region_id:checkReg.region_id
+        })
+        return res.send(country)
+    }catch(error){
+        return res.status(404).send(error)
+    }
+}
+
+const createNext=async (req,res,next)=>{
     try{
         const country=await req.context.models.countries.create({
             country_id:req.body.country_id,
             country_name:req.body.country_name,
             region_id:req.body.region_id
         })
-        return res.send(country)
+        req.countries=country
+        next()
     }catch(error){
         return res.status(404).send(error)
     }
@@ -70,6 +96,7 @@ export default{
     findAll,
     findOne,
     create,
+    createNext,
     update,
     deleted,
     querySQL

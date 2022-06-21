@@ -7,6 +7,7 @@ router.get('/',indexController.countryController.findAll)
 router.get ('/sql',indexController.countryController.querySQL)
 router.get('/:id',indexController.countryController.findOne)
 router.post('/',indexController.countryController.create)
+router.post('/next/',indexController.countryController.createNext,indexController.locationController.create)
 router.put('/:id',indexController.countryController.update)
 router.delete('/:id',indexController.countryController.deleted)
 

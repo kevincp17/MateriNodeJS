@@ -7,6 +7,7 @@ router.get('/',indexController.jobController.findAll)
 router.get ('/sql',indexController.jobController.querySQL)
 router.get('/:id',indexController.jobController.findOne)
 router.post('/',indexController.jobController.create)
+router.post('/next/',indexController.jobController.createNext,indexController.employeeController.create)
 router.put('/:id',indexController.jobController.update)
 router.delete('/:id',indexController.jobController.deleted)
 

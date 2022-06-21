@@ -1,7 +1,13 @@
 import { sequelize } from "../models/init-models"
 const findAll=async (req,res)=>{
     try{
-        const employee=await req.context.models.employees.findAll()
+        const employee=await req.context.models.employees.findAll({
+            include:[{
+                model:req.context.models.dependents,
+                as:"dependents",
+                required:true
+            }]
+        })
         return res.send(employee)
     }catch(error){
         return res.status(404).send(error)
@@ -20,6 +26,72 @@ const findOne=async (req,res)=>{
 }
 
 const create=async (req,res)=>{
+    const checkDepartment=req.departments
+    const checkJob=req.jobs
+    const checkDependent=req.dependents
+
+    if(checkDepartment){
+        try{
+            const employee=await req.context.models.employees.create({
+                employee_id:req.body.employee_id,
+                first_name:req.body.first_name,
+                last_name:req.body.last_name,
+                email:req.body.email,
+                phone_number:req.body.phone_number,
+                hire_date:req.body.hire_date,
+                job_id:req.body.job_id,
+                salary:req.body.salary,
+                manager_id:req.body.manager_id,
+                department_id:checkDepartment.department_id,
+                proj_account_mgr:req.body.proj_account_mgr,
+            })
+            return res.send(employee)
+        }catch(error){
+            return res.status(404).send(error)
+        }
+    }else if(checkJob){
+        try{
+            const employee=await req.context.models.employees.create({
+                employee_id:req.body.employee_id,
+                first_name:req.body.first_name,
+                last_name:req.body.last_name,
+                email:req.body.email,
+                phone_number:req.body.phone_number,
+                hire_date:req.body.hire_date,
+                job_id:checkJob.job_id,
+                salary:req.body.salary,
+                manager_id:req.body.manager_id,
+                department_id:req.body.department_id,
+                proj_account_mgr:req.body.proj_account_mgr,
+            })
+            return res.send(employee)
+        }catch(error){
+            return res.status(404).send(error)
+        }
+    }else if(checkDependent){
+        try{
+            const employee=await req.context.models.employees.create({
+                first_name:req.body.first_name,
+                last_name:req.body.last_name,
+                email:req.body.email,
+                phone_number:req.body.phone_number,
+                hire_date:req.body.hire_date,
+                job_id:req.body.job_id,
+                salary:req.body.salary,
+                manager_id:req.body.manager_id,
+                department_id:req.body.department_id,
+                proj_account_mgr:req.body.proj_account_mgr,
+                employee_id:checkDependent.employee_id
+            })
+            return res.send(employee)
+        }catch(error){
+            return res.status(404).send(error)
+        }
+    }
+    
+}
+
+const createNext=async (req,res,next)=>{
     try{
         const employee=await req.context.models.employees.create({
             employee_id:req.body.employee_id,
@@ -34,7 +106,8 @@ const create=async (req,res)=>{
             department_id:req.body.department_id,
             proj_account_mgr:req.body.proj_account_mgr,
         })
-        return res.send(employee)
+        req.employees=employee
+        next()
     }catch(error){
         return res.status(404).send(error)
     }
@@ -78,6 +151,7 @@ export default{
     findAll,
     findOne,
     create,
+    createNext,
     update,
     deleted,
     querySQL
