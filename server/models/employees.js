@@ -58,6 +58,10 @@ module.exports = function(sequelize, DataTypes) {
     proj_account_mgr: {
       type: DataTypes.INTEGER,
       allowNull: true
+    },
+    emp_profile: {
+      type: DataTypes.STRING(255),
+      allowNull: true
     }
   }, {
     sequelize,

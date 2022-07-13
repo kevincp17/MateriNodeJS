@@ -5,6 +5,7 @@ import dependentRoute from "./dependentRoute";
 import employeeRoute from "./employeeRoute";
 import jobRoute from "./jobRoute";
 import locationRoute from "./locationRoute";
+import userRoute from "./userRoute";
 
 export default{
     regionRoute,
@@ -13,5 +14,6 @@ export default{
     dependentRoute,
     employeeRoute,
     jobRoute,
-    locationRoute
+    locationRoute,
+    userRoute
 }

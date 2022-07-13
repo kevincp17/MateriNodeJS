@@ -26,6 +26,7 @@ const _locations = require("./locations");
 const _project_assignment = require("./project_assignment");
 const _projects = require("./projects");
 const _regions = require("./regions");
+const _users = require("./users");
 
 function initModels(sequelize) {
   const countries = _countries(sequelize, DataTypes);
@@ -37,6 +38,7 @@ function initModels(sequelize) {
   const project_assignment = _project_assignment(sequelize, DataTypes);
   const projects = _projects(sequelize, DataTypes);
   const regions = _regions(sequelize, DataTypes);
+  const users = _users(sequelize, DataTypes);
 
   employees.belongsToMany(projects, { as: 'pras_proj_id_projects', through: project_assignment, foreignKey: "pras_employee_id", otherKey: "pras_proj_id" });
   projects.belongsToMany(employees, { as: 'pras_employee_id_employees', through: project_assignment, foreignKey: "pras_proj_id", otherKey: "pras_employee_id" });
@@ -69,6 +71,7 @@ function initModels(sequelize) {
     project_assignment,
     projects,
     regions,
+    users
   };
 }
 

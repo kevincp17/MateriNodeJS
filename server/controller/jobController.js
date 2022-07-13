@@ -1,18 +1,20 @@
 import { sequelize } from "../models/init-models"
 const findAll=async (req,res)=>{
     try{
-        const job=await req.context.models.jobs.findAll({
-            include:[{
-                model:req.context.models.employees,
-                as:"employees",
-                required:true,
-                include: {
-                    model: req.context.models.dependents,
-                    as:"dependents",
-                    required:true
-                  }
-            }]
-        })
+        const job=await req.context.models.jobs.findAll(
+        //     {
+        //     include:[{
+        //         model:req.context.models.employees,
+        //         as:"employees",
+        //         required:true,
+        //         include: {
+        //             model: req.context.models.dependents,
+        //             as:"dependents",
+        //             required:true
+        //           }
+        //     }]
+        // }
+        )
         return res.send(job)
     }catch(error){
         return res.status(404).send(error)

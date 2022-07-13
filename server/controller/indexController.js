@@ -5,6 +5,7 @@ import dependentController from "./dependentController";
 import employeeController from "./employeeController";
 import jobController from "./jobController";
 import locationController from "./locationController";
+import userController from "./userController"
 
 export default{
     regionController,
@@ -13,5 +14,6 @@ export default{
     dependentController,
     employeeController,
     jobController,
-    locationController
+    locationController,
+    userController
 }

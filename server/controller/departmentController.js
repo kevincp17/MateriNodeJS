@@ -1,11 +1,7 @@
 import { sequelize } from "../models/init-models"
 const findAll=async (req,res)=>{
     try{
-        const department=await req.context.models.departments.findAll({
-            include:[{
-                all:true
-            }]
-        })
+        const department=await req.context.models.departments.findAll()
         return res.send(department)
     }catch(error){
         return res.status(404).send(error)
@@ -24,12 +20,12 @@ const findOne=async (req,res)=>{
 }
 
 const create=async (req,res)=>{
-    const checkLocation=req.locations
+    // const checkLocation=req.locations
     try{
         const department=await req.context.models.departments.create({
             department_id:req.body.department_id,
             department_name:req.body.department_name,
-            location_id:checkLocation.location_id
+            location_id:req.body.location_id
         })
         return res.send(department)
     }catch(error){
